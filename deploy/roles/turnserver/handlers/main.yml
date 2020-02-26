@@ -1,0 +1,4 @@
+---
+
+- name: restart turnserver
+  systemd: name=coturn.service state=restarted

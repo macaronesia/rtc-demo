@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn webapp daemon
+Requires={{ webapp_systemd_socket_unit_name }}
+After=network.target
+
+[Service]
+PIDFile={{ webapp_runtime_dir_path }}/pid
+User=www-data
+Group=www-data
+RuntimeDirectory={{ webapp_runtime_dir_name }}
+WorkingDirectory={{ webapp_src_dir_path }}
+ExecStart={{ webapp_virtualenv_dir_path }}/bin/gunicorn app:app -c {{ webapp_gunicorn_conf_path }}
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target

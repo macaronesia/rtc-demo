@@ -1,0 +1,17 @@
+from datetime import timedelta
+
+
+DEBUG = True
+SECRET_KEY = 'secret'
+
+SQLALCHEMY_DATABASE_URI = 'sqlite://'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+JWT_TOKEN_LOCATION = ('headers', 'query_string')
+JWT_ACCESS_TOKEN_EXPIRES = False
+JWT_ALGORITHM = 'HS256'
+JWT_QUERY_STRING_NAME = 'jwt'
+
+TURN_SERVICE_DOMAIN = 'domain.name'
+TURN_SERVICE_SHARE_SECRET_KEY = 'north'
+TURN_SERVICE_TTL_TIMEDELTA = timedelta(days=1)

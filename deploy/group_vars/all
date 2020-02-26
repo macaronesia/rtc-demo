@@ -1,0 +1,15 @@
+---
+
+remote_user: server
+turnserver_secret: north
+ssl_cert_bundle_file_name: domain-bundle.crt
+ssl_private_key_file_name: domain.key
+remote_user_dir_path: /home/{{ remote_user }}
+ssl_cert_bundle_dir_path: /etc/ssl/certs
+ssl_private_key_dir_path: /etc/ssl/private
+ssl_dh_param_file_path: /etc/ssl/certs/dhparam.pem
+load_pyenv_exec_path: '{{ remote_user_dir_path }}/.pyenv/load_pyenv_exec.sh'
+webapp_python_version: 3.8.0
+webapp_virtualenv_name: rtc_demo
+webapp_virtualenv_dir_path: '{{ remote_user_dir_path }}/.pyenv/versions/{{ webapp_virtualenv_name }}'
+load_webapp_venv_exec_path: '{{ remote_user_dir_path }}/.pyenv/versions/{{ webapp_virtualenv_name }}/load_webapp_venv_exec.sh'

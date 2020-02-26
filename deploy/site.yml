@@ -1,0 +1,14 @@
+---
+
+- name: configure and deploy the web servers and application code
+  hosts: webservers
+  remote_user: '{{ remote_user }}'
+  become: yes
+  become_method: sudo
+  roles:
+    - common
+    - ssl
+    - turnserver
+    - nginx
+    - python
+    - webapp

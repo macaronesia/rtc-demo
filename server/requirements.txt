@@ -1,0 +1,10 @@
+arrow
+Cerberus
+cryptography
+eventlet
+gunicorn
+Flask
+Flask-SocketIO
+Flask-Cors
+Flask-SQLAlchemy
+Flask-JWT-Extended

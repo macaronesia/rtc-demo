@@ -1,0 +1,4 @@
+---
+
+- name: tmpfiles.d create all
+  shell: systemd-tmpfiles --create

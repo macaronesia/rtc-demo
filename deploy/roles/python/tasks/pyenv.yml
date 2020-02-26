@@ -1,0 +1,21 @@
+---
+
+- name: Retrieve pyenv repo
+  git: repo=https://github.com/pyenv/pyenv.git dest={{ remote_user_dir_path }}/.pyenv
+  become: no
+
+- name: Add pyenv lines in .profile
+  lineinfile: dest={{ remote_user_dir_path }}/.profile line={{ item }} state=present
+  with_items:
+    - 'export PATH="{{ remote_user_dir_path }}/.pyenv/bin:$PATH"'
+    - 'eval "$(pyenv init -)"'
+    - 'eval "$(pyenv virtualenv-init -)"'
+  become: no
+
+- name: Copy load_pyenv_exec.sh
+  template: src=load_pyenv_exec.sh dest={{ load_pyenv_exec_path }} mode=0755
+  become: no
+
+- name: Retrieve pyenv virtualenv repo
+  git: repo=https://github.com/pyenv/pyenv-virtualenv.git dest={{ remote_user_dir_path }}/.pyenv/plugins/pyenv-virtualenv
+  become: no

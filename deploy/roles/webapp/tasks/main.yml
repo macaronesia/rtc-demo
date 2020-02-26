@@ -1,0 +1,48 @@
+---
+
+- import_tasks: virtualenv.yml
+
+- import_tasks: pip.yml
+
+- name: Create webapp base directory
+  file: path={{ webapp_base_dir_path }} state=directory mode=0755
+  become: no
+
+- name: Create webapp source directory
+  file: path={{ webapp_src_dir_path }} state=directory mode=0755
+  become: no
+
+- name: Copy webapp source code
+  synchronize: src="{{ role_path }}/../../../server/" dest={{ webapp_src_dir_path }}/
+  become: no
+
+- name: Copy webapp gunicorn conf
+  template: src=gunicorn.config.py dest={{ webapp_gunicorn_conf_path }} mode=0644
+  become: no
+
+- name: Copy webapp tmpfiles.d conf
+  template: src=tmpfiles.webapp.conf dest=/etc/tmpfiles.d/gunicorn_webapp.conf mode=0644
+  notify: tmpfiles.d create all
+
+- name: Copy webapp socket systemd unit file
+  template: src=systemd.webapp.socket dest=/etc/systemd/system/{{ webapp_systemd_socket_unit_name }} mode=0644
+  notify: restart webapp socket systemd unit
+
+- name: Copy webapp service systemd unit file
+  template: src=systemd.webapp.service dest=/etc/systemd/system/{{ webapp_systemd_service_unit_name }} mode=0644
+  notify: restart webapp service systemd unit
+
+- name: Enable webapp service systemd unit
+  systemd: name={{ webapp_systemd_service_unit_name }} enabled=yes
+
+- name: Create client directory
+  file: path={{ client_home_dir_path }} state=directory mode=0755
+  become: no
+
+- name: Copy client files
+  synchronize: src="{{ role_path }}/../../../client/dist/" dest={{ client_home_dir_path }}/
+  become: no
+
+- name: Copy webapp nginx conf
+  template: src=nginx.webapp.conf dest=/etc/nginx/conf.d/webapp.conf mode=0644
+  notify: restart nginx

@@ -1,0 +1,26 @@
+---
+
+- name: Add nginx ppa
+  apt_repository: repo='ppa:nginx/stable' update_cache=yes
+
+- name: Install nginx
+  apt: pkg=nginx state=present
+  register: nginx_installation
+
+- name: Enable nginx systemd unit
+  systemd: name=nginx.service enabled=yes
+
+- name: Copy nginx.conf
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644 backup=yes
+  when: nginx_installation.changed
+  notify: restart nginx
+
+- name: Remove nginx default configuration files in site-enabled
+  shell: rm -f /etc/nginx/sites-enabled/* removes=/etc/nginx/sites-enabled/
+  when: nginx_installation.changed
+  notify: restart nginx
+
+- name: Remove nginx default configuration files in conf.d
+  shell: rm -f /etc/nginx/conf.d/* removes=/etc/nginx/conf.d/
+  when: nginx_installation.changed
+  notify: restart nginx

@@ -1,0 +1,8 @@
+---
+
+- name: Install turnserver
+  apt: pkg=coturn state=present
+
+- name: Copy turnserver.conf
+  template: src=turnserver.conf dest=/etc/turnserver.conf owner=root group=root mode=0644 backup=yes
+  notify: restart turnserver

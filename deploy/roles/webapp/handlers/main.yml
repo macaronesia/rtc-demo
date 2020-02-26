@@ -1,0 +1,11 @@
+---
+
+- import_tasks: ../../nginx/handlers/main.yml
+
+- import_tasks: ../../systemd/handlers/main.yml
+
+- name: restart webapp socket systemd unit
+  systemd: name={{ webapp_systemd_socket_unit_name }} state=restarted daemon_reload=yes
+
+- name: restart webapp service systemd unit
+  systemd: name={{ webapp_systemd_service_unit_name }} state=restarted daemon_reload=yes

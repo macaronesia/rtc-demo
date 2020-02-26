@@ -1,0 +1,26 @@
+---
+
+- name: Install packages for compiling Python 3.8
+  apt:
+    pkg:
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - tk-dev
+      - libffi-dev
+      - liblzma-dev
+    state: present
+
+- name: Check if pyenv python exists
+  stat: path={{ remote_user_dir_path }}/.pyenv/versions/{{ webapp_python_version }}/bin/python
+  become: no
+  register: pyenv_python_bin_file_info
+
+- name: Install pyenv python
+  shell: '{{ load_pyenv_exec_path }} pyenv install {{ webapp_python_version }}'
+  become: no
+  when: pyenv_python_bin_file_info.stat.exists == false

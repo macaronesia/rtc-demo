@@ -1,0 +1,16 @@
+---
+
+- name: Update system package lists
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Upgrades all installed system packages
+  apt: upgrade=yes
+
+- name: Install prerequisite system packages
+  apt:
+    pkg:
+      - build-essential
+      - curl
+      - git
+      - checkinstall
+    state: present

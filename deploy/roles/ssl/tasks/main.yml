@@ -1,0 +1,10 @@
+---
+
+- name: Copy SSL signed cert plus intermediates
+  copy: src=secrets/{{ ssl_cert_bundle_file_name }} dest={{ ssl_cert_bundle_dir_path }}/  mode=0644
+
+- name: Copy SSL private key
+  copy: src=secrets/{{ ssl_private_key_file_name }} dest={{ ssl_private_key_dir_path }}/  mode=0600
+
+- name: Generate SSL DH parameter
+  shell: openssl dhparam -out {{ ssl_dh_param_file_path }} 2048 creates={{ ssl_dh_param_file_path }}

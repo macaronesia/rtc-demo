@@ -1,0 +1,15 @@
+---
+
+- name: Check if webapp virtualenv exists
+  stat: path={{ remote_user_dir_path }}/.pyenv/versions/{{ webapp_virtualenv_name }}/bin/python
+  become: no
+  register: webapp_virtualenv_bin_file_info
+
+- name: Install webapp virtualenv
+  shell: '{{ load_pyenv_exec_path }} pyenv virtualenv {{ webapp_python_version }} {{ webapp_virtualenv_name }}'
+  become: no
+  when: webapp_virtualenv_bin_file_info.stat.exists == false
+
+- name: Copy webapp virtualenv exec.sh
+  template: src=load_webapp_venv_exec.sh dest={{ load_webapp_venv_exec_path }} mode=0755
+  become: no

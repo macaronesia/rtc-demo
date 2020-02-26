@@ -1,0 +1,13 @@
+---
+
+webapp_base_dir_path: '{{ remote_user_dir_path }}/webapp/rtc_demo'
+webapp_src_dir_path: '{{ webapp_base_dir_path }}/src'
+webapp_gunicorn_conf_dir_path: '{{ webapp_base_dir_path }}'
+webapp_gunicorn_conf_path: '{{ webapp_gunicorn_conf_dir_path }}/gunicorn.config.py'
+webapp_runtime_dir_name: gunicorn_webapp
+webapp_runtime_dir_path: /run/{{ webapp_runtime_dir_name }}
+webapp_socket_path: '{{ webapp_runtime_dir_path }}/socket'
+webapp_systemd_service_unit_name: gunicorn_webapp.service
+webapp_systemd_socket_unit_name: gunicorn_webapp.socket
+webapp_api_url_prefix: /api
+client_home_dir_path: '{{ webapp_base_dir_path }}/client'
